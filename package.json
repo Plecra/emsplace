@@ -1,0 +1,22 @@
+{
+  "name": "emsplace",
+  "version": "0.1.0",
+  "description": "a shared doodle",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Plecra/emsplace.git"
+  },
+  "author": "Plecra",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Plecra/emsplace/issues"
+  },
+  "homepage": "https://github.com/Plecra/emsplace#readme",
+  "dependencies": {
+    "jpeg-js": "^0.4.4"
+  }
+}
