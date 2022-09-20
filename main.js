@@ -9,6 +9,14 @@ import webviewer from "./webviewer.js"
 import parsecmd from "./cli.js"
 
 let subscribers = [];
+subscribers.notify = function() {
+    let j = 0;
+    for (let i = 0; i < this.length; i++) {
+        if (this[i].notify()) this[j++] = this[i];
+    }
+    this.length = j;
+    return this.length !== 0;
+}
 
 http.createServer((req, res) => {
     // This routes requests to the HTML or image generation endpoints
@@ -21,7 +29,12 @@ http.createServer((req, res) => {
             "Content-Type": "text/event-stream",
             "Connection": "keep-alive"
         });
-        subscribers.push(res);
+        subscribers.push({
+            notify() {
+                if (!res.socket.destroyed) res.write("data:\n\n");
+                return !res.socket.destroyed;
+            }
+        });
     } else {
         webviewer(req, res);
     }
@@ -35,14 +48,7 @@ stdin.on("data", line => {
     switch (cmd.name) {
         case "set":
             easel.set_colour(cmd.x, cmd.y, cmd.colour);
-            const tosendto = subscribers;
-            subscribers = [];
-            for (const subscriber of tosendto) {
-                if (!subscriber.socket.destroyed) {
-                    subscriber.write("data: foobar\n\n");
-                    subscribers.push(subscriber);
-                }
-            }
+            subscribers.notify();
             break;
         default:
             const errlen = Math.max(1, cmd.length);
