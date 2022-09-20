@@ -5,11 +5,19 @@ import easel from "./easel.js"
 import webviewer from "./webviewer.js"
 import parsecmd from "./cli.js"
 
+let subscribers = [];
+
 http.createServer((req, res) => {
     // This routes requests to the HTML or image generation endpoints
     if (req.method === "GET" && req.url === "/api/canvas") {
         res.setHeader("Content-Type", "image/jpeg");
         easel.pipe_canvas_jpeg(res);
+    } else if (req.method === "GET" && req.url === "/api/subscribe-updates") {
+        res.writeHead(200, {
+            "Content-Type": "text/event-stream",
+            "Connection": "keep-alive"
+        });
+        subscribers.push(res);
     } else {
         webviewer(req, res);
     }
@@ -23,6 +31,14 @@ stdin.on("data", line => {
     switch (cmd.name) {
         case "set":
             easel.set_colour(cmd.x, cmd.y, cmd.colour);
+            const tosendto = subscribers;
+            subscribers = [];
+            for (const subscriber of tosendto) {
+                if (!subscriber.socket.destroyed) {
+                    subscriber.write("data: foobar\n\n");
+                    subscribers.push(subscriber);
+                }
+            }
             break;
         default:
             const errlen = Math.max(1, cmd.length);

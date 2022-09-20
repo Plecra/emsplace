@@ -17,5 +17,8 @@
             image-rendering: pixelated;
         }
     </style>
+    <script>
+        new EventSource("/api/subscribe-updates").onmessage = () => location.reload();
+    </script>
 </head>
 <img src="/api/canvas"/>
