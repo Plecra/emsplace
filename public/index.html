@@ -36,6 +36,31 @@
         }
         // Subscribe to all updates to the canvas and reload it whenever they happen
         new EventSource("/api/subscribe-updates").onmessage = fetch_canvas;
+
+        let last_x = -1;
+        let last_y = -1;
+        image.addEventListener("mousedown", function(ev) {
+            ev.preventDefault();
+            
+            const image = ev.target;
+            let xratio = ev.offsetX / image.clientWidth;
+            let yratio = ev.offsetY / image.clientHeight;
+            const imageRatio = image.naturalWidth / image.naturalHeight;
+            const elRatio = image.clientWidth / image.clientHeight;
+            if (imageRatio < elRatio) {
+                xratio *= elRatio / imageRatio;
+            } else {
+                yratio *= imageRatio / elRatio;
+            }
+            {
+                const x = Math.floor(xratio * image.naturalWidth);
+                const y = Math.floor(yratio * image.naturalHeight);
+                if (last_x === x && last_y === y) return;
+                fetch(`/api/set/${x}/${y}/red`, { method: "POST" });
+                last_x = x;
+                last_y = y;
+            }
+        });
     </script>
 </head>
 <!-- browsers will typically cache this image, meaning they won't see the most recent canvas without JavaScript enabled -->

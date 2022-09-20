@@ -36,6 +36,24 @@ http.createServer((req, res) => {
                 return !res.socket.destroyed;
             }
         });
+    } else if (req.method === "POST" && req.url.startsWith("/api/set/")) {
+        const args = req.url.slice("/api/set/".length).split("/");
+        if (args.length !== 3) {
+            res.statusCode = 404;
+            res.end();
+            return;
+        }
+        const [x_arg, y_arg, colour] = args;
+        const x = parseInt(x_arg, 10);
+        const y = parseInt(y_arg, 10);
+        if (isNaN(x) || isNaN(y) || colour !== "red") {
+            res.statusCode = 404;
+            res.end();
+            return;
+        }
+        res.end();
+        easel.set_colour(x, y, 0xFF0000);
+        subscribers.notify();
     } else {
         webviewer(req, res);
     }
