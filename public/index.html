@@ -1,26 +1,21 @@
 <head>
-    <title>
-        Doodle!
-    </title>
+    <title>Doodle!</title>
     <style>
-        html, body {
-            height: 100vh;
-        }
+        /* Fill the screen, and use a small border at the edges */
         body {
+            height: 100vh;
             margin: 0;
             padding: 5px;
             box-sizing: border-box;
         }
-        #view {
+        /* Make the image as big as possible without warping */
+        img {
             height: 100%;
             width: 100%;
-            background-image: url("/image");
-            background-size: contain;
-            background-repeat: no-repeat;
+            object-fit: contain;
+            object-position: left top;
             image-rendering: pixelated;
         }
     </style>
 </head>
-<body>
-    <div id="view"/>
-</body>
+<img src="image"/>
