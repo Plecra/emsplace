@@ -22,6 +22,7 @@ http.createServer((req, res) => {
     // This routes requests to the HTML or image generation endpoints
     if (req.method === "GET" && req.url.startsWith("/api/canvas")) {
         res.setHeader("Content-Type", "image/jpeg");
+        res.setHeader("Cache-Control", "no-cache");
         easel.pipe_canvas_jpeg(res);
     // Implements the EventSource API (used in index.html) to update clients when the canvas changes
     } else if (req.method === "GET" && req.url === "/api/subscribe-updates") {
