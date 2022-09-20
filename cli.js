@@ -11,8 +11,8 @@ const COLOURS = [
 const NAMES = COLOURS.map(col => col[0].toLowerCase());
 export default function(line) {
     const input = new Cursor(line);
-    const cmd = word(input);
     try {
+        const cmd = word(input);
         switch (cmd) {
             case "set":
                 const [x, y, colouri] = list([num("x"), num("y"), choose("colour", NAMES)])(input);
@@ -25,16 +25,20 @@ export default function(line) {
     }
 }
 const list = params => input => params.map(param => param(input));
+// parse an argument matching one of the `choices`
+// returns the index of choices that was found
 const choose = (name, choices) => input => {
-    const w = word(input);
-    const i = choices.findIndex(choice => w.toLowerCase() === choice);
+    const w = word(input).toLowerCase();
+    const i = choices.findIndex(choice => w === choice);
     return i === -1 ? e(`expected \`${name}\` to be one of ${choices}`, input.index, w.length) : i;
 };
+// parse a number argument
 const num = name => input => {
     const w = word(input);
     const n = parseInt(w, 10);
     return isNaN(n) ? e(`expected number for \`${name}\``, input.index, w.length) : n;
 }
+// parse a \s*(\S+) from input
 function word(input) {
     input.skip_matching(is_whitespace)
     const i = input.index;
@@ -51,6 +55,7 @@ function e(s, end, length) {
     err.length = length;
     throw err;
 }
+// tracks the offset into the input buffer, to allow errors to point at user input
 class Cursor {
     constructor(buffer) {
         this.buffer = buffer;

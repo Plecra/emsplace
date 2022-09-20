@@ -1,3 +1,6 @@
+/// As the main module, this script is in charge of handling IO
+/// coming into the server
+
 import http from "http"
 import { stdin, stdout } from "process"
 
@@ -12,6 +15,7 @@ http.createServer((req, res) => {
     if (req.method === "GET" && req.url === "/api/canvas") {
         res.setHeader("Content-Type", "image/jpeg");
         easel.pipe_canvas_jpeg(res);
+    // Implements the EventSource API (used in index.html) to update clients when the canvas changes
     } else if (req.method === "GET" && req.url === "/api/subscribe-updates") {
         res.writeHead(200, {
             "Content-Type": "text/event-stream",

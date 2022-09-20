@@ -18,7 +18,10 @@
         }
     </style>
     <script>
-        new EventSource("/api/subscribe-updates").onmessage = () => location.reload();
+        // Subscribe to all updates to the canvas
+        new EventSource("/api/subscribe-updates").onmessage =
+            // and reload the page whenever they happen
+            () => location.reload();
     </script>
 </head>
 <img src="/api/canvas"/>
