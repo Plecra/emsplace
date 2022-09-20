@@ -30,13 +30,13 @@
             }
         }
 
-        let canvas_version = 0;
         fetch_canvas();
         function fetch_canvas() {
-            image.src = "/api/canvas?version=" + canvas_version++;
+            image.src = "/api/canvas?version=" + performance.now();
         }
         // Subscribe to all updates to the canvas and reload it whenever they happen
         new EventSource("/api/subscribe-updates").onmessage = fetch_canvas;
     </script>
 </head>
+<!-- browsers will typically cache this image, meaning they won't see the most recent canvas without JavaScript enabled -->
 <img src="/api/canvas?version=0"/>
