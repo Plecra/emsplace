@@ -1,7 +1,7 @@
 import jpeg from "jpeg-js";
 
 // Create a bytebuffer of RGBA values to store the canvas
-const SIZE = 24;
+const SIZE = 160;
 const data = Buffer.alloc(SIZE * SIZE * 4);
 let cached_jpeg = make_jpeg(data);
 
