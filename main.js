@@ -48,17 +48,27 @@ http.createServer((req, res) => {
     } else if (req.method === "POST" && req.url.startsWith("/api/set/")) {
         const args = req.url.slice("/api/set/".length).split("/");
         if (args.length !== 3) {
-            res.statusCode = 404;
-            res.end();
+            res.statusCode = 400;
+            res.end("the /api/set/$x/$y/$colour route requires 3 arguments");
             return;
         }
         const [x_arg, y_arg, colour] = args;
         const x = parseInt(x_arg, 10);
         const y = parseInt(y_arg, 10);
         const colour_record = COLOURS.find(col => col[0].toLowerCase() === colour);
-        if (isNaN(x) || isNaN(y) || colour_record === undefined) {
-            res.statusCode = 404;
-            res.end();
+        if (isNaN(x)) {
+            res.statusCode = 400;
+            res.end("argument $x must be an integer");
+            return;
+        }
+        if (isNaN(y)) {
+            res.statusCode = 400;
+            res.end("argument $y must be an integer");
+            return;
+        }
+        if (colour_record === undefined) {
+            res.statusCode = 400;
+            res.end("argument $colour must be one of " + COLOURS.map(col => col[0].toLowerCase()));
             return;
         }
         res.end();
