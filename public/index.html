@@ -30,6 +30,11 @@
         }
     </style>
     <script>
+        const API = window.API = {
+            set_colour(x, y, colour) {
+                fetch(`/api/set/${x}/${y}/${colour}`, { method: "POST" });
+            }
+        };
         const image = new Image();
 
         {
@@ -69,7 +74,7 @@
                 const y = Math.floor(yratio * image.naturalHeight);
                 if (last_x === x && last_y === y) return;
                 const colour = document.forms.tray.colour.value;
-                fetch(`/api/set/${x}/${y}/${colour}`, { method: "POST" });
+                API.set_colour(x, y, colour);
                 last_x = x;
                 last_y = y;
             }
