@@ -52,3 +52,15 @@ fold applyentry canvas log
 
 many operations can be accelerated as necessary on this datastructure.
 the simplest is caching the canvas for direct requests
+
+what's implemented so far? welll...
+
+- [x] canvas rendering
+- [x] web client
+- [x] and server
+- [x] edits
+- [x] a basic cli for fiddling with the canvas at runtime
+- [ ] saving to disk
+- [ ] log of edits
+- [ ] stamina system
+- [ ] authentication
