@@ -1,4 +1,4 @@
-const COLOURS = [
+export const COLOURS = [
     ["White",   0xFFFFFF],
     ["Black",   0x000000],
     ["Red",     0xFF0000],

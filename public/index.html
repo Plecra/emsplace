@@ -16,6 +16,18 @@
             object-position: left top;
             image-rendering: pixelated;
         }
+        #tray {
+            position: absolute;
+            height: 3em;
+            bottom: 0;
+            left: 0;
+            margin: 0;
+            width: 100%;
+            background: mediumslateblue;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+        }
     </style>
     <script>
         const image = new Image();
@@ -56,7 +68,8 @@
                 const x = Math.floor(xratio * image.naturalWidth);
                 const y = Math.floor(yratio * image.naturalHeight);
                 if (last_x === x && last_y === y) return;
-                fetch(`/api/set/${x}/${y}/red`, { method: "POST" });
+                const colour = document.forms.tray.colour.value;
+                fetch(`/api/set/${x}/${y}/${colour}`, { method: "POST" });
                 last_x = x;
                 last_y = y;
             }
@@ -65,3 +78,10 @@
 </head>
 <!-- browsers will typically cache this image, meaning they won't see the most recent canvas without JavaScript enabled -->
 <img src="/api/canvas?version=0"/>
+<form id="tray">
+    <label><input type="radio" name="colour" value="white" checked/>White</label>
+    <label><input type="radio" name="colour" value="black"/>Black</label>
+    <label><input type="radio" name="colour" value="red"/>Red</label>
+    <label><input type="radio" name="colour" value="green"/>Green</label>
+    <label><input type="radio" name="colour" value="blue"/>Blue</label>
+</div>

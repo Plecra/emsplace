@@ -6,7 +6,7 @@ import { stdin, stdout } from "process"
 
 import easel from "./easel.js"
 import webviewer from "./webviewer.js"
-import parsecmd from "./cli.js"
+import parsecmd, { COLOURS } from "./cli.js"
 
 let subscribers = [];
 subscribers.notify = function() {
@@ -46,13 +46,14 @@ http.createServer((req, res) => {
         const [x_arg, y_arg, colour] = args;
         const x = parseInt(x_arg, 10);
         const y = parseInt(y_arg, 10);
-        if (isNaN(x) || isNaN(y) || colour !== "red") {
+        const colour_record = COLOURS.find(col => col[0].toLowerCase() === colour);
+        if (isNaN(x) || isNaN(y) || colour_record === undefined) {
             res.statusCode = 404;
             res.end();
             return;
         }
         res.end();
-        easel.set_colour(x, y, 0xFF0000);
+        easel.set_colour(x, y, colour_record[1]);
         subscribers.notify();
     } else {
         webviewer(req, res);
