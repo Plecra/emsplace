@@ -64,3 +64,7 @@ what's implemented so far? welll...
 - [ ] log of edits
 - [ ] stamina system
 - [ ] authentication
+
+#### possible upgrades
+
+this can be made way more friendly for online hosting by switching it over to a serverless architecture. we'd need to move the server sent events to a service like https://pusher.com, which is enough work that it's not worth it.
